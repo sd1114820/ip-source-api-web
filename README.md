@@ -209,12 +209,12 @@ curl "http://localhost:8180/json/8.8.8.8?fields=ip,country_name,city_name,asn"
 
 3. **编译项目**
    ```bash
-   go build -o ip-api
+   go build -o ip-source-api-web
    ```
 
 4. **运行服务**
    ```bash
-   ./ip-api
+   ./ip-source-api-web
    ```
 
 5. **验证服务**
@@ -251,14 +251,16 @@ air
 
 ### 速率限制配置
 
-- **算法**: 令牌桶算法
+- **请求频率**: X次/分钟
+- **突发允许**: X次
+- **算法**: 令牌桶
 - **存储**: 内存映射
-- **保护机制**: 智能频率控制
 
 ### 缓存配置
 
-- **存储方式**: 内存缓存
-- **管理策略**: 自动过期清理
+- **过期时间**: X分钟
+- **清理间隔**: X分钟
+- **存储方式**: 内存
 - **键格式**: `{ip}?fields={fields}`
 
 ## 📊 性能指标
@@ -323,7 +325,7 @@ curl -s http://localhost:8180/json/8.8.8.8 | jq '.ip' || exit 1
 
 ### 直接部署
 
-将编译好的二进制文件 `ip-api` 和 `data` 目录（如果需要保留现有数据库）上传到您的服务器。设置好环境变量后，直接运行即可。建议使用 `systemd` 或 `supervisor` 等工具来管理进程，以确保服务在后台持续运行并能自动重启。
+将编译好的二进制文件 `ip-source-api-web` 和 `data` 目录（如果需要保留现有数据库）上传到您的服务器。设置好环境变量后，直接运行即可。建议使用 `systemd` 或 `supervisor` 等工具来管理进程，以确保服务在后台持续运行并能自动重启。
 
 ### Docker 部署 (推荐)
 
@@ -347,7 +349,7 @@ RUN go mod download
 COPY . .
 
 # 编译应用
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ip-api .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ip-source-api-web .
 
 # 使用一个轻量的基础镜像来运行应用
 FROM alpine:latest
@@ -358,7 +360,7 @@ RUN apk --no-cache add ca-certificates tzdata
 WORKDIR /root/
 
 # 从构建阶段复制编译好的二进制文件
-COPY --from=builder /app/ip-api .
+COPY --from=builder /app/ip-source-api-web .
 COPY --from=builder /app/index.html .
 
 # 创建数据目录
@@ -368,23 +370,23 @@ RUN mkdir ./data
 EXPOSE 8180
 
 # 运行应用
-CMD ["./ip-api"]
+CMD ["./ip-source-api-web"]
 ```
 
 **构建和运行:**
 
 ```bash
 # 构建镜像
-docker build -t ip-geolocation-api .
+docker build -t ip-source-api-web .
 
 # 运行容器
-docker run -d -p 8180:8180 --name ip-api ip-geolocation-api
+docker run -d -p 8180:8180 --name ip-source-api-web ip-source-api-web
 
 # 使用docker-compose
 cat > docker-compose.yml << EOF
 version: '3.8'
 services:
-  ip-api:
+  ip-source-api-web:
     build: .
     ports:
       - "8180:8180"
