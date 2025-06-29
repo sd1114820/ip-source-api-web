@@ -247,7 +247,7 @@ air
 | ReadTimeout | `5s` | HTTP读取超时时间 |
 | WriteTimeout | `10s` | HTTP写入超时时间 |
 | IdleTimeout | `120s` | HTTP空闲超时时间 |
-| MaxMindLicenseKey | `已内置` | MaxMind API密钥 |
+| MaxMindLicenseKey | `硬编码配置` | MaxMind API密钥（需在config.go中直接设置） |
 
 ### 速率限制配置
 

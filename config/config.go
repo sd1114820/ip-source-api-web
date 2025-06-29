@@ -32,7 +32,7 @@ var App = struct {
 	// CnDBName 是中国 IP 数据库的文件名。
 	CnDBName string
 
-	// MaxMindLicenseKey 是您的 MaxMind 许可证密钥。
+	// MaxMindLicenseKey 是您的 MaxMind 许可证密钥（硬编码配置）。
 	MaxMindLicenseKey string
 }{
 	DataDir:        "data",
@@ -45,5 +45,5 @@ var App = struct {
 	AsnDBName:      "GeoLite2-ASN.mmdb",
 	CnDBName:       "GeoCN.mmdb",
 
-	MaxMindLicenseKey: "", // 请在环境变量中设置 MAXMIND_LICENSE_KEY
+	MaxMindLicenseKey: "", // 请在此处直接设置您的 MaxMind 许可证密钥
 }
