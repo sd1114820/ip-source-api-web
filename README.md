@@ -198,8 +198,8 @@ curl "http://127.0.0.1:8080/json/8.8.8.8?fields=ip,country_name,city_name,asn"
 
 1. **克隆项目**
    ```bash
-   git clone <repository-url>
-   cd ip-api
+   git clone https://github.com/sd1114820/ip-source-api-web.git
+   cd ip-source-api-web
    ```
 
 2. **下载依赖**
@@ -449,8 +449,8 @@ curl "http://localhost:8180/json/8.8.8.8?fields=ip,country_name,city"
 ### 开发环境设置
 ```bash
 # 克隆项目
-git clone <repository-url>
-cd ip-api
+git clone https://github.com/sd1114820/ip-source-api-web.git
+cd ip-source-api-web
 
 # 安装依赖
 go mod tidy
