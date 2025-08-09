@@ -330,7 +330,7 @@
     <div class="container">
         <div class="header">
             <h1>🗺️ 静态地图API文档</h1>
-            <p>基于Geoapify的高质量静态地图服务</p>
+            <p>高质量静态地图服务</p>
         </div>
         
         <div class="nav">
@@ -346,11 +346,11 @@
                     <input type="number" id="mapLatInput" placeholder="纬度 (如: 39.9042)" step="any">
                     <input type="number" id="mapLonInput" placeholder="经度 (如: 116.4074)" step="any">
                     <select id="mapStyleSelect">
-                        <option value="osm-carto">OpenStreetMap</option>
-                        <option value="osm-bright">OSM Bright</option>
-                        <option value="dark-matter">Dark Matter</option>
-                        <option value="positron">Positron</option>
-                        <option value="klokantech-basic">Basic</option>
+                        <option value="osm-carto">标准地图</option>
+                        <option value="osm-bright">明亮地图</option>
+                        <option value="dark-matter">深色地图</option>
+                        <option value="positron">浅色地图</option>
+                        <option value="klokantech-basic">简洁地图</option>
                     </select>
                     <button onclick="generateMap()">生成地图</button>
                 </div>
@@ -367,7 +367,7 @@
                 <h3>静态地图服务</h3>
                 <span class="method">GET</span>
                 <div class="url">/map</div>
-                <p><strong>描述：</strong>获取指定位置的静态地图图片，代理Geoapify Static Map API</p>
+                <p><strong>描述：</strong>获取指定位置的静态地图图片</p>
                 <p><strong>支持参数：</strong>center, zoom, width, height, format, style, marker, scaleFactor等</p>
             </div>
             
@@ -534,7 +534,6 @@ Content-Type: application/json
         <div class="security-note">
             <h4>⚠️ 使用说明</h4>
             <ol>
-                <li>本服务代理Geoapify Static Map API，需要有效的API密钥</li>
                 <li>图片尺寸限制：最大2048x2048像素</li>
                 <li>缩放级别范围：1-20，数值越大显示越详细</li>
                 <li>坐标格式必须为：lonlat:经度,纬度（注意经纬度顺序）</li>
