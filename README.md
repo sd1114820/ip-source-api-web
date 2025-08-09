@@ -87,13 +87,13 @@ curl http://localhost:8180/json
 
 ```bash
 # 基本地图（需要指定中心点坐标）
-curl "http://localhost:8180/map?style=osm-carto&width=400&height=300&center=lonlat:116.3974,39.9093&zoom=10" > map.png
+curl "http://localhost:8180/map?style=osm-carto&width=400&height=300&center=lonlat:116.3974,39.9093&zoom=10&format=png" > map.png
 
 # 带标记的地图
-curl "http://localhost:8180/map?style=osm-carto&width=400&height=300&center=lonlat:116.3974,39.9093&zoom=10&marker=lonlat:116.3974,39.9093;color:%23ff0000;size:medium" > map_with_marker.png
+curl "http://localhost:8180/map?style=osm-carto&width=400&height=300&center=lonlat:116.3974,39.9093&zoom=10&marker=lonlat:116.3974,39.9093;color:%23ff0000;size:medium&format=png" > map_with_marker.png
 
 # 自定义样式地图
-curl "http://localhost:8180/map?style=osm-bright&width=600&height=400&center=lonlat:-74.006,40.7128&zoom=12" > nyc_map.png
+curl "http://localhost:8180/map?style=osm-bright&width=600&height=400&center=lonlat:-74.006,40.7128&zoom=12&format=png" > nyc_map.png
 ```
 
 **支持的参数:**
