@@ -557,6 +557,189 @@
         </div>
         
         <div class="card">
+            <h2>🗺️ 静态地图服务</h2>
+            <p>基于Geoapify提供的高质量静态地图API服务，支持多种地图样式和自定义标记</p>
+            
+            <div class="endpoint">
+                <h3>获取静态地图</h3>
+                <span class="method">GET</span>
+                <div class="url">/map</div>
+                <p><strong>描述：</strong>获取指定位置的静态地图图片，代理Geoapify Static Map API</p>
+            </div>
+            
+            <h3>🚀 快速开始</h3>
+            <div class="demo-section">
+                <div class="demo-input">
+                    <input type="text" id="mapLatInput" placeholder="纬度 (如: 39.9042)" style="width: 120px;">
+                    <input type="text" id="mapLonInput" placeholder="经度 (如: 116.4074)" style="width: 120px;">
+                    <select id="mapStyleSelect" style="width: 100px;">
+                        <option value="osm-carto">标准</option>
+                        <option value="osm-bright">明亮</option>
+                        <option value="positron">简约</option>
+                        <option value="dark-matter">暗色</option>
+                        <option value="klokantech-basic">基础</option>
+                    </select>
+                    <button onclick="generateMap()">生成地图</button>
+                </div>
+                <div class="demo-results">
+                    <div id="mapPreview" style="text-align: center; margin-top: 20px;">
+                        <div class="info-placeholder">输入坐标后将在此显示地图预览</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>📋 支持参数</h3>
+            <table class="params-table">
+                <thead>
+                    <tr>
+                        <th>参数名</th>
+                        <th>类型</th>
+                        <th>必填</th>
+                        <th>说明</th>
+                        <th>示例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>center</td><td>string</td><td>是</td><td>地图中心点坐标 (纬度,经度)</td><td>39.9042,116.4074</td></tr>
+                    <tr><td>zoom</td><td>int</td><td>否</td><td>缩放级别 (1-20)</td><td>10</td></tr>
+                    <tr><td>size</td><td>string</td><td>否</td><td>图片尺寸 (宽x高)</td><td>600x400</td></tr>
+                    <tr><td>format</td><td>string</td><td>否</td><td>图片格式</td><td>png, jpg</td></tr>
+                    <tr><td>style</td><td>string</td><td>否</td><td>地图样式</td><td>osm-carto, osm-bright</td></tr>
+                    <tr><td>marker</td><td>string</td><td>否</td><td>标记点</td><td>lonlat:116.4074,39.9042</td></tr>
+                    <tr><td>scaleFactor</td><td>int</td><td>否</td><td>缩放因子 (1或2)</td><td>2</td></tr>
+                </tbody>
+            </table>
+            
+            <h3>🎨 地图样式</h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>osm-carto</h4>
+                    <p>OpenStreetMap标准样式，清晰详细</p>
+                </div>
+                <div class="feature-item">
+                    <h4>osm-bright</h4>
+                    <p>明亮风格，适合白天使用</p>
+                </div>
+                <div class="feature-item">
+                    <h4>positron</h4>
+                    <p>简约风格，突出重点信息</p>
+                </div>
+                <div class="feature-item">
+                    <h4>dark-matter</h4>
+                    <p>暗色主题，适合夜间使用</p>
+                </div>
+            </div>
+            
+            <h3>📝 使用示例</h3>
+            
+            <h4>基础调用</h4>
+            <div class="code-block">
+# 获取北京天安门的地图
+GET /map?center=39.9042,116.4074&zoom=15&size=600x400
+            </div>
+            
+            <h4>带标记的地图</h4>
+            <div class="code-block">
+# 在地图上添加标记点
+GET /map?center=39.9042,116.4074&zoom=15&size=600x400&marker=lonlat:116.4074,39.9042
+            </div>
+            
+            <h4>自定义样式</h4>
+            <div class="code-block">
+# 使用暗色主题，高分辨率
+GET /map?center=39.9042,116.4074&zoom=15&size=800x600&style=dark-matter&scaleFactor=2&format=png
+            </div>
+            
+            <h4>JavaScript调用示例</h4>
+            <div class="code-block">
+// 基础调用
+const mapUrl = '/map?center=39.9042,116.4074&zoom=15&size=600x400';
+document.getElementById('mapImg').src = mapUrl;
+
+// 动态生成地图
+function showMap(lat, lon, zoom = 10) {
+    const url = `/map?center=${lat},${lon}&zoom=${zoom}&size=600x400&style=osm-bright`;
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = '地图';
+    img.style.maxWidth = '100%';
+    document.getElementById('mapContainer').appendChild(img);
+}
+
+// 结合IP查询显示地图
+async function showIPLocation(ip) {
+    const response = await fetch(`/json/${ip}`);
+    const data = await response.json();
+    
+    if (data.latitude && data.longitude) {
+        const mapUrl = `/map?center=${data.latitude},${data.longitude}&zoom=12&size=600x400&marker=lonlat:${data.longitude},${data.latitude}`;
+        document.getElementById('locationMap').src = mapUrl;
+    }
+}
+            </div>
+            
+            <h4>Python调用示例</h4>
+            <div class="code-block">
+import requests
+from PIL import Image
+from io import BytesIO
+
+# 获取地图图片
+def get_map_image(lat, lon, zoom=10, size='600x400'):
+    url = f'/map?center={lat},{lon}&zoom={zoom}&size={size}'
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        # 保存图片
+        with open('map.png', 'wb') as f:
+            f.write(response.content)
+        
+        # 或者直接处理图片数据
+        image = Image.open(BytesIO(response.content))
+        return image
+    else:
+        print(f'获取地图失败: {response.status_code}')
+        return None
+
+# 使用示例
+map_image = get_map_image(39.9042, 116.4074, zoom=15)
+if map_image:
+    map_image.show()
+            </div>
+            
+            <h4>HTML嵌入示例</h4>
+            <div class="code-block">
+<!-- 直接嵌入地图图片 -->
+<img src="/map?center=39.9042,116.4074&zoom=15&size=600x400" alt="地图" style="max-width: 100%;">
+
+<!-- 响应式地图容器 -->
+<div class="map-container" style="text-align: center; margin: 20px 0;">
+    <img id="dynamicMap" src="" alt="动态地图" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</div>
+
+<script>
+// 动态更新地图
+function updateMap(lat, lon) {
+    const mapImg = document.getElementById('dynamicMap');
+    mapImg.src = `/map?center=${lat},${lon}&zoom=12&size=800x600&style=osm-bright&marker=lonlat:${lon},${lat}`;
+}
+</script>
+            </div>
+            
+            <div class="security-note">
+                <h4>🔧 配置说明</h4>
+                <p>静态地图服务需要配置Geoapify API密钥：</p>
+                <ol>
+                    <li>访问 <a href="https://www.geoapify.com/" target="_blank">Geoapify官网</a> 注册账号</li>
+                    <li>获取免费的API密钥（每月3000次免费调用）</li>
+                    <li>在 <code>config/config.go</code> 中设置 <code>GeoapifyAPIKey</code></li>
+                    <li>重新编译并启动服务</li>
+                </ol>
+                <p class="warning">⚠️ <strong>注意</strong>：未配置API密钥时，地图服务将返回错误信息。</p>
+            </div>
+        </div>
+        
+        <div class="card">
             <h2>📖 API文档</h2>
             
             <div class="endpoint">
@@ -996,9 +1179,48 @@ curl "https://ipapi.zhouyang.cool/json/8.8.8.8?fields=ip,country,city,latitude,l
             container.innerHTML = html || '<div class="info-placeholder">暂无详细信息</div>';
         }
         
+        // 生成地图预览
+        function generateMap() {
+            const latInput = document.getElementById('mapLatInput');
+            const lonInput = document.getElementById('mapLonInput');
+            const styleSelect = document.getElementById('mapStyleSelect');
+            const mapPreview = document.getElementById('mapPreview');
+            
+            const lat = latInput.value.trim();
+            const lon = lonInput.value.trim();
+            const style = styleSelect.value;
+            
+            if (!lat || !lon) {
+                mapPreview.innerHTML = '<div class="info-placeholder">请输入有效的纬度和经度</div>';
+                return;
+            }
+            
+            if (isNaN(lat) || isNaN(lon)) {
+                mapPreview.innerHTML = '<div class="info-placeholder">纬度和经度必须是数字</div>';
+                return;
+            }
+            
+            const mapUrl = `/map?center=${lat},${lon}&zoom=12&size=600x400&style=${style}&marker=lonlat:${lon},${lat}`;
+            
+            mapPreview.innerHTML = `
+                <div style="margin-bottom: 10px;">
+                    <strong>🗺️ 地图预览</strong>
+                </div>
+                <img src="${mapUrl}" alt="地图预览" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" onerror="this.parentElement.innerHTML='<div class=\"info-placeholder\">地图加载失败，请检查API密钥配置</div>'">
+                <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                    <strong>API调用：</strong><br>
+                    <code style="background: #f5f5f5; padding: 2px 4px; border-radius: 3px;">${mapUrl}</code>
+                </div>
+            `;
+        }
+        
         // 页面加载时自动查询当前IP
         window.addEventListener('load', () => {
             queryIP();
+            
+            // 设置默认坐标（北京天安门）
+            document.getElementById('mapLatInput').value = '39.9042';
+            document.getElementById('mapLonInput').value = '116.4074';
         });
     </script>
 </body>
