@@ -1128,7 +1128,7 @@ curl "https://ipapi.zhouyang.cool/json/8.8.8.8?fields=ip,country,city,latitude,l
                 return;
             }
             
-            const mapUrl = `/map?center=${lat},${lon}&zoom=12&size=600x400&style=${style}&marker=lonlat:${lon},${lat}`;
+            const mapUrl = `/map?style=${style}&width=600&height=400&center=lonlat:${lon},${lat}&zoom=12&marker=lonlat:${lon},${lat};type:material;size:medium;icon:marker&format=jpeg&lang=zh`;
             
             mapPreview.innerHTML = `
                 <div style="margin-bottom: 10px;">
