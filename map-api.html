@@ -429,8 +429,8 @@
                         <td>marker</td>
                         <td>string</td>
                         <td>否</td>
-                        <td>标记点，格式：lonlat:经度,纬度;type:类型;size:大小;icon:图标</td>
-                        <td>lonlat:116.4074,39.9042;type:material;size:medium;icon:marker</td>
+                        <td>标记点，格式：lonlat:经度,纬度;type:类型;color:颜色;size:大小;icon:图标</td>
+                        <td>lonlat:116.4074,39.9042;type:awesome;color:%23ff0000;size:medium;icon:marker</td>
                     </tr>
                     <tr>
                         <td>scaleFactor</td>
@@ -493,7 +493,7 @@ GET /map?style=osm-carto&width=600&height=400&center=lonlat:116.4074,39.9042&zoo
                 <div class="example-item">
                     <div class="example-title">📍 带标记的地图</div>
                     <div class="code-block">
-GET /map?style=osm-carto&width=600&height=400&center=lonlat:116.4074,39.9042&zoom=15&marker=lonlat:116.4074,39.9042;type:material;size:medium;icon:marker
+GET /map?style=osm-carto&width=600&height=400&center=lonlat:116.4074,39.9042&zoom=15&marker=lonlat:116.4074,39.9042;type:awesome;color:%23ff0000;size:medium;icon:marker
                     </div>
                     <div class="example-desc">在地图上添加标记点</div>
                 </div>
@@ -509,7 +509,7 @@ GET /map?style=dark-matter&width=800&height=600&center=lonlat:116.4074,39.9042&z
                 <div class="example-item">
                     <div class="example-title">🌍 多个标记点</div>
                     <div class="code-block">
-GET /map?style=positron&width=800&height=600&center=lonlat:116.4074,39.9042&zoom=12&marker=lonlat:116.4074,39.9042;type:material;size:medium;icon:marker|lonlat:116.3974,39.9142;type:material;size:small;icon:circle
+GET /map?style=positron&width=800&height=600&center=lonlat:116.4074,39.9042&zoom=12&marker=lonlat:116.4074,39.9042;type:awesome;color:%23ff0000;size:medium;icon:marker|lonlat:116.3974,39.9142;type:awesome;color:%2300ff00;size:small;icon:circle
                     </div>
                     <div class="example-desc">在地图上添加多个不同样式的标记点</div>
                 </div>
@@ -567,7 +567,7 @@ Content-Type: application/json
                 return;
             }
             
-            const mapUrl = `/map?style=${style}&width=600&height=400&center=lonlat:${lon},${lat}&zoom=12&marker=lonlat:${lon},${lat};type:material;size:medium;icon:marker&format=png`;
+            const mapUrl = `/map?style=${style}&width=600&height=400&center=lonlat:${lon},${lat}&zoom=12&marker=lonlat:${lon},${lat};type:awesome;color:%23ff0000;size:medium;icon:marker&format=png`;
             
             mapPreview.innerHTML = `
                 <div style="margin-bottom: 10px;">
