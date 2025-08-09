@@ -63,6 +63,12 @@ func main() {
 	http.Handle("/json/", chainedHandler)
 	http.Handle("/json", chainedHandler)
 
+	// 静态地图API路由
+	staticMapHandler := http.HandlerFunc(api.StaticMapHandler)
+	chainedMapHandler := api.RateLimitMiddleware(api.CorsMiddleware(staticMapHandler))
+	http.Handle("/map/", chainedMapHandler)
+	http.Handle("/map", chainedMapHandler)
+
 	// 提供主页服务
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/" {

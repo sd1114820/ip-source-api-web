@@ -34,6 +34,9 @@ var App = struct {
 
 	// MaxMindLicenseKey 是您的 MaxMind 许可证密钥（硬编码配置）。
 	MaxMindLicenseKey string
+
+	// GeoapifyAPIKey 是您的 Geoapify API 密钥（用于静态地图服务）。
+	GeoapifyAPIKey string
 }{
 	DataDir:        "data",
 	UpdateInterval: 24, // hours
@@ -46,4 +49,5 @@ var App = struct {
 	CnDBName:       "GeoCN.mmdb",
 
 	MaxMindLicenseKey: "", // 请在此处直接设置您的 MaxMind 许可证密钥
+	GeoapifyAPIKey:    "", // 请在此处直接设置您的 Geoapify API 密钥
 }

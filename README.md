@@ -58,10 +58,16 @@
 
 ### 端点
 
+#### IP 地理位置查询
 - `GET /json/{ip}`: 查询指定 IP 地址的地理位置信息。
 - `GET /json`: 查询客户端自身 IP 地址的地理位置信息。
 
+#### 静态地图服务
+- `GET /map`: 获取静态地图图片（代理 Geoapify Static Map API）。
+
 ### 请求示例
+
+#### IP 地理位置查询
 
 查询特定 IP (例如 `8.8.8.8`):
 
@@ -74,6 +80,32 @@ curl http://localhost:8180/json/8.8.8.8
 ```bash
 curl http://localhost:8180/json
 ```
+
+#### 静态地图服务
+
+获取指定位置的静态地图:
+
+```bash
+# 基本地图（需要指定中心点坐标）
+curl "http://localhost:8180/map?style=osm-carto&width=400&height=300&center=lonlat:116.3974,39.9093&zoom=10" > map.png
+
+# 带标记的地图
+curl "http://localhost:8180/map?style=osm-carto&width=400&height=300&center=lonlat:116.3974,39.9093&zoom=10&marker=lonlat:116.3974,39.9093;color:%23ff0000;size:medium" > map_with_marker.png
+
+# 自定义样式地图
+curl "http://localhost:8180/map?style=osm-bright&width=600&height=400&center=lonlat:-74.006,40.7128&zoom=12" > nyc_map.png
+```
+
+**支持的参数:**
+- `style`: 地图样式 (osm-carto, osm-bright, klokantech-basic, etc.)
+- `width`: 图片宽度 (最大 2048px)
+- `height`: 图片高度 (最大 2048px) 
+- `center`: 地图中心点 (格式: lonlat:经度,纬度)
+- `zoom`: 缩放级别 (1-20)
+- `marker`: 标记点 (格式: lonlat:经度,纬度;color:颜色;size:大小)
+- `format`: 输出格式 (png, jpg)
+
+更多参数请参考 [Geoapify Static Map API 文档](https://apidocs.geoapify.com/docs/maps/static/)。
 
 ### HTTP状态码
 
@@ -248,6 +280,7 @@ air
 | WriteTimeout | `10s` | HTTP写入超时时间 |
 | IdleTimeout | `120s` | HTTP空闲超时时间 |
 | MaxMindLicenseKey | `硬编码配置` | MaxMind API密钥（需在config.go中直接设置） |
+| GeoapifyAPIKey | `硬编码配置` | Geoapify API密钥（用于静态地图服务，需在config.go中直接设置） |
 
 ### 速率限制配置
 

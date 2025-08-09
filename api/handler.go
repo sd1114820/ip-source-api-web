@@ -3,10 +3,13 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"io"
+	"ip-api/config"
 	"ip-api/geoip"
 	"log"
 	"net"
 	"net/http"
+	"net/url"
 	"reflect"
 	"strings"
 	"time"
@@ -986,5 +989,87 @@ func getChinesePostalCode(regionCode, regionName string) string {
 		}
 	}
 
-	return "" // 如果没有找到匹配项则返回空
+	return ""
+}
+
+// StaticMapHandler 处理静态地图请求
+func StaticMapHandler(w http.ResponseWriter, r *http.Request) {
+	// 检查 Geoapify API 密钥是否配置
+	if config.App.GeoapifyAPIKey == "" {
+		log.Println("Geoapify API key not configured")
+		http.Error(w, "Static map service not available", http.StatusServiceUnavailable)
+		return
+	}
+
+	// 获取查询参数
+	queryParams := r.URL.Query()
+	
+	// 构建 Geoapify Static Map API URL
+	geoapifyURL := "https://maps.geoapify.com/v1/staticmap"
+	params := url.Values{}
+	
+	// 添加 API 密钥
+	params.Set("apiKey", config.App.GeoapifyAPIKey)
+	
+	// 转发所有查询参数（除了可能的 apiKey）
+	for key, values := range queryParams {
+		if key != "apiKey" { // 防止客户端覆盖我们的 API 密钥
+			for _, value := range values {
+				params.Add(key, value)
+			}
+		}
+	}
+	
+	// 构建完整的请求 URL
+	fullURL := geoapifyURL + "?" + params.Encode()
+	
+	// 创建缓存键
+	cacheKey := "staticmap:" + params.Encode()
+	
+	// 检查缓存
+	if cachedData, found := ipCache.Get(cacheKey); found {
+		log.Printf("Serving static map from cache")
+		w.Header().Set("X-Cache", "HIT")
+		w.Header().Set("Content-Type", "image/png")
+		w.Header().Set("Cache-Control", "public, max-age=3600")
+		w.Write(cachedData.([]byte))
+		return
+	}
+	
+	// 向 Geoapify 发起请求
+	resp, err := http.Get(fullURL)
+	if err != nil {
+		log.Printf("Error fetching static map: %v", err)
+		http.Error(w, "Failed to fetch static map", http.StatusInternalServerError)
+		return
+	}
+	defer resp.Body.Close()
+	
+	// 检查响应状态
+	if resp.StatusCode != http.StatusOK {
+		log.Printf("Geoapify API returned status: %d", resp.StatusCode)
+		http.Error(w, "Static map service error", resp.StatusCode)
+		return
+	}
+	
+	// 读取响应数据
+	imageData, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Printf("Error reading static map response: %v", err)
+		http.Error(w, "Failed to read static map", http.StatusInternalServerError)
+		return
+	}
+	
+	// 缓存图片数据（缓存1小时）
+	ipCache.Set(cacheKey, imageData, 1*time.Hour)
+	
+	// 设置响应头
+	w.Header().Set("Content-Type", resp.Header.Get("Content-Type"))
+	w.Header().Set("Cache-Control", "public, max-age=3600")
+	w.Header().Set("X-Cache", "MISS")
+	
+	// 返回图片数据
+	w.Write(imageData)
+	
+	log.Printf("Static map served successfully")
 }
