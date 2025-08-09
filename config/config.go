@@ -47,7 +47,6 @@ var App = struct {
 	CityDBName:     "GeoLite2-City.mmdb",
 	AsnDBName:      "GeoLite2-ASN.mmdb",
 	CnDBName:       "GeoCN.mmdb",
-
 	MaxMindLicenseKey: "", // 请在此处直接设置您的 MaxMind 许可证密钥
-	GeoapifyAPIKey:    "", // 请在此处直接设置您的 Geoapify API 密钥
+	GeoapifyAPIKey:    "test_key_for_debugging", // 临时测试密钥，请替换为真实密钥
 }

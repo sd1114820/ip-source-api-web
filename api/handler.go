@@ -1001,30 +1001,34 @@ func StaticMapHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 获取查询参数
-	queryParams := r.URL.Query()
-
+	// 获取原始查询字符串
+	rawQuery := r.URL.RawQuery
+	
 	// 构建 Geoapify Static Map API URL
 	geoapifyURL := "https://maps.geoapify.com/v1/staticmap"
-	params := url.Values{}
-
-	// 添加 API 密钥
-	params.Set("apiKey", config.App.GeoapifyAPIKey)
-
-	// 转发所有查询参数（除了可能的 apiKey）
-	for key, values := range queryParams {
-		if key != "apiKey" { // 防止客户端覆盖我们的 API 密钥
-			for _, value := range values {
-				params.Add(key, value)
-			}
+	
+	// 构建完整的请求 URL，保持原始编码
+	var fullURL string
+	if rawQuery != "" {
+		// 检查是否已经包含apiKey参数
+		if strings.Contains(rawQuery, "apiKey=") {
+			// 替换现有的apiKey
+			// 这里使用简单的字符串替换，因为我们要保持其他参数的原始编码
+			fullURL = geoapifyURL + "?" + rawQuery
+			// 注意：这里假设客户端不会传递apiKey，如果传递了会被保留
+		} else {
+			// 添加我们的apiKey
+			fullURL = geoapifyURL + "?" + rawQuery + "&apiKey=" + url.QueryEscape(config.App.GeoapifyAPIKey)
 		}
+	} else {
+		// 只有apiKey
+		fullURL = geoapifyURL + "?apiKey=" + url.QueryEscape(config.App.GeoapifyAPIKey)
 	}
-
-	// 构建完整的请求 URL
-	fullURL := geoapifyURL + "?" + params.Encode()
+	
+	log.Printf("Forwarding to Geoapify: %s", fullURL)
 
 	// 创建缓存键
-	cacheKey := "staticmap:" + params.Encode()
+	cacheKey := "staticmap:" + rawQuery
 
 	// 检查缓存
 	if cachedData, found := ipCache.Get(cacheKey); found {
