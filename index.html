@@ -712,7 +712,7 @@ GET /json/8.8.8.8?fields=ip,country,city,latitude,longitude
                 <div class="example-item">
                     <div class="example-title">🗺️ 基础地图</div>
                     <div class="code-block">
-GET /map?center=39.9042,116.4074&zoom=15&size=600x400
+GET /map?style=osm-carto&width=600&height=400&center=lonlat:116.4074,39.9042&zoom=15
                     </div>
                     <div class="example-desc">获取北京天安门的地图</div>
                 </div>
@@ -720,7 +720,7 @@ GET /map?center=39.9042,116.4074&zoom=15&size=600x400
                 <div class="example-item">
                     <div class="example-title">📍 带标记的地图</div>
                     <div class="code-block">
-GET /map?center=39.9042,116.4074&zoom=15&size=600x400&marker=lonlat:116.4074,39.9042
+GET /map?style=osm-carto&width=600&height=400&center=lonlat:116.4074,39.9042&zoom=15&marker=lonlat:116.4074,39.9042;type:material;size:medium;icon:marker
                     </div>
                     <div class="example-desc">在地图上添加标记点</div>
                 </div>
@@ -728,7 +728,7 @@ GET /map?center=39.9042,116.4074&zoom=15&size=600x400&marker=lonlat:116.4074,39.
                 <div class="example-item">
                     <div class="example-title">🎨 自定义样式</div>
                     <div class="code-block">
-GET /map?center=39.9042,116.4074&zoom=15&size=800x600&style=dark-matter&scaleFactor=2
+GET /map?style=dark-matter&width=800&height=600&center=lonlat:116.4074,39.9042&zoom=15&scaleFactor=2
                     </div>
                     <div class="example-desc">使用暗色主题，高分辨率地图</div>
                 </div>
@@ -1128,7 +1128,7 @@ curl "https://ipapi.zhouyang.cool/json/8.8.8.8?fields=ip,country,city,latitude,l
                 return;
             }
             
-            const mapUrl = `/map?center=${lat},${lon}&zoom=12&size=600x400&style=${style}&marker=lonlat:${lon},${lat}`;
+            const mapUrl = `/map?style=${style}&width=600&height=400&center=lonlat:${lon},${lat}&zoom=12&marker=lonlat:${lon},${lat};type:material;size:medium;icon:marker&format=png`;
             
             mapPreview.innerHTML = `
                 <div style="margin-bottom: 10px;">
