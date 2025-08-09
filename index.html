@@ -650,6 +650,90 @@
                     <p><strong>描述：</strong>查询指定IP地址的地理位置信息</p>
                     <p><strong>支持方法：</strong>GET（数据查询）、OPTIONS（CORS预检请求）</p>
                 </div>
+                
+                <h3>请求参数</h3>
+                <table class="params-table">
+                    <thead>
+                        <tr>
+                            <th>参数名</th>
+                            <th>类型</th>
+                            <th>必填</th>
+                            <th>说明</th>
+                            <th>示例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>center</td>
+                            <td>string</td>
+                            <td>是</td>
+                            <td>地图中心点坐标</td>
+                            <td>lonlat:116.4074,39.9042</td>
+                        </tr>
+                        <tr>
+                            <td>zoom</td>
+                            <td>number</td>
+                            <td>否</td>
+                            <td>缩放级别 (1-20)</td>
+                            <td>15</td>
+                        </tr>
+                        <tr>
+                            <td>width</td>
+                            <td>number</td>
+                            <td>否</td>
+                            <td>图片宽度 (最大2048px)</td>
+                            <td>600</td>
+                        </tr>
+                        <tr>
+                            <td>height</td>
+                            <td>number</td>
+                            <td>否</td>
+                            <td>图片高度 (最大2048px)</td>
+                            <td>400</td>
+                        </tr>
+                        <tr>
+                            <td>style</td>
+                            <td>string</td>
+                            <td>否</td>
+                            <td>地图样式</td>
+                            <td>osm-carto</td>
+                        </tr>
+                        <tr>
+                            <td>marker</td>
+                            <td>string</td>
+                            <td>否</td>
+                            <td>标记点</td>
+                            <td>lonlat:116.4074,39.9042;type:material</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>请求示例</h3>
+                <div class="request-examples">
+                    <div class="example-item">
+                        <div class="example-title">📍 查询指定IP地址</div>
+                        <div class="code-block">
+GET /json/8.8.8.8
+                        </div>
+                        <div class="example-desc">查询Google DNS服务器的地理位置信息</div>
+                    </div>
+                    
+                    <div class="example-item">
+                        <div class="example-title">🔍 查询当前请求者IP</div>
+                        <div class="code-block">
+GET /json/
+                        </div>
+                        <div class="example-desc">自动检测并查询当前请求来源的IP地址</div>
+                    </div>
+                    
+                    <div class="example-item">
+                        <div class="example-title">🎯 指定返回字段</div>
+                        <div class="code-block">
+GET /json/8.8.8.8?fields=ip,country,city,latitude,longitude
+                        </div>
+                        <div class="example-desc">只返回指定的字段，减少响应数据量</div>
+                    </div>
+                </div>
             </div>
             
             <!-- 静态地图API文档 -->
