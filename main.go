@@ -69,12 +69,19 @@ func main() {
 	http.Handle("/map/", chainedMapHandler)
 	http.Handle("/map", chainedMapHandler)
 
-	// 提供主页服务
+	// 提供静态文件服务
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/" {
 			http.ServeFile(w, r, "index.html")
 		} else {
-			http.NotFound(w, r)
+			// 移除开头的斜杠，直接作为文件路径
+			filePath := r.URL.Path[1:]
+			// 检查文件是否存在
+			if _, err := os.Stat(filePath); err == nil {
+				http.ServeFile(w, r, filePath)
+			} else {
+				http.NotFound(w, r)
+			}
 		}
 	})
 
