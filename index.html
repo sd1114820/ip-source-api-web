@@ -1128,13 +1128,13 @@ curl "https://ipapi.zhouyang.cool/json/8.8.8.8?fields=ip,country,city,latitude,l
                 return;
             }
             
-            const mapUrl = `/map?style=${style}&width=600&height=400&center=lonlat:${lon},${lat}&zoom=12&marker=lonlat:${lon},${lat};type:material;size:medium;icon:marker&format=jpeg&lang=zh`;
+            const mapUrl = `/map?center=${lat},${lon}&zoom=12&size=600x400&style=${style}&marker=lonlat:${lon},${lat}`;
             
             mapPreview.innerHTML = `
                 <div style="margin-bottom: 10px;">
                     <strong>🗺️ 地图预览</strong>
                 </div>
-                <img src="${mapUrl}" alt="地图预览" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" onerror="this.parentElement.innerHTML='<div class=\"info-placeholder\">地图加载失败，请检查API密钥配置</div>'">
+                <img src="${mapUrl}" alt="地图预览" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" onerror="this.parentElement.innerHTML='<div class=\"info-placeholder\">地图加载失败</div>'">
                 <div style="margin-top: 10px; font-size: 12px; color: #666;">
                     <strong>API调用：</strong><br>
                     <code style="background: #f5f5f5; padding: 2px 4px; border-radius: 3px;">${mapUrl}</code>
