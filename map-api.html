@@ -368,6 +368,7 @@
                 <span class="method">GET</span>
                 <div class="url">/map</div>
                 <p><strong>描述：</strong>获取指定位置的静态地图图片</p>
+                <p><strong>重要提示：</strong>format参数是必需的，必须指定图片格式（png或jpg）</p>
                 <p><strong>支持参数：</strong>center, zoom, width, height, format, style, marker, scaleFactor等</p>
             </div>
             
@@ -534,6 +535,7 @@ Content-Type: application/json
         <div class="security-note">
             <h4>⚠️ 使用说明</h4>
             <ol>
+                <li><strong>format参数必需：</strong>必须指定图片格式（png或jpg），否则会返回错误</li>
                 <li>图片尺寸限制：最大2048x2048像素</li>
                 <li>缩放级别范围：1-20，数值越大显示越详细</li>
                 <li>坐标格式必须为：lonlat:经度,纬度（注意经纬度顺序）</li>
